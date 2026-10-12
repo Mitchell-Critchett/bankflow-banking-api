@@ -36,7 +36,7 @@ public class ClientService {
     public ClientResponse findById(UUID id) {
         Client client = repository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException(String.format("Клиент с id= {} не найден", id.toString()))
+                        new IllegalArgumentException(String.format("Клиент с id=%s не найден", id))
                 );
         return toResponse(client);
     }
