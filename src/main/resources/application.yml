@@ -7,6 +7,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/bankflow
     username: bankflow
     password: bankflow
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
