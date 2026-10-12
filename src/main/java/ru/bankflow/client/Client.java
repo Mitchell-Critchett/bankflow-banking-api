@@ -1,4 +1,4 @@
-package ru.bankflow.client.Client;
+package ru.bankflow.client;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,10 +1,10 @@
-package ru.bankflow.client.Client;
+package ru.bankflow.client;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.bankflow.client.Client.dto.ClientResponse;
-import ru.bankflow.client.Client.dto.CreateClientRequest;
+import ru.bankflow.client.dto.ClientResponse;
+import ru.bankflow.client.dto.CreateClientRequest;
 
 import java.util.UUID;
 

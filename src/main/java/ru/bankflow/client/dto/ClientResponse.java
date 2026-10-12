@@ -1,4 +1,4 @@
-package ru.bankflow.client.Client.dto;
+package ru.bankflow.client.dto;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
