@@ -1,6 +1,9 @@
 CREATE TABLE accounts (
     id UUID PRIMARY KEY,
-    client_id UUID FOREIGN KEY NOT NULL,
+    client_id UUID NOT NULL REFERENCES clients(id),
     account_number VARCHAR(20) UNIQUE NOT NULL,
-    balance NUMERIC(19,2) NOT NULL >= 0
+    balance NUMERIC(19,2) NOT NULL CHECK ( balance >= 0 ),
+    currency CHAR(3) NOT NULL,
+    status VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL
 );
