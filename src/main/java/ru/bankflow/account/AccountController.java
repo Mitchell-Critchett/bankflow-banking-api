@@ -1,5 +1,6 @@
 package ru.bankflow.account;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,15 @@ public class AccountController {
 
     private final AccountService service;
 
+    @PostMapping("/create")
+    public ResponseEntity<Account> createAccount(
+            @RequestBody Account accountToCreate
+    ) {
+        log.info("called createAccount");
 
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.createAccount(accountToCreate));
+    }
 
 
     @GetMapping("/{id}")

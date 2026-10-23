@@ -57,4 +57,59 @@ public class AccountEntity {
         this.created_at = created_at;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getClient_id() {
+        return client_id;
+    }
+
+    public void setClient_id(UUID client_id) {
+        this.client_id = client_id;
+    }
+
+    public String getAccount_number() {
+        return account_number;
+    }
+
+    public void setAccount_number(String account_number) {
+        this.account_number = account_number;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public OffsetDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(OffsetDateTime created_at) {
+        this.created_at = created_at;
+    }
 }

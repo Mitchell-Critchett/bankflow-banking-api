@@ -8,11 +8,5 @@ public interface AccountRepository
         extends JpaRepository<AccountEntity, UUID> {
 
     // Query Метод поиска по id возвращает Account
-//    @Query("""
-//        SELECT a.id FROM accounts
-//                WHERE a.id = :id
-//        """)
-//    Account findAccount(
-//            @Param(UUID id)
-//    )
+    boolean existByAccountNumber(String accountNumber);
 }
