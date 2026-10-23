@@ -23,30 +23,30 @@ public class ClientService {
             );
         }
 
-        Client client = new Client(
+        ClientEntity clientEntity = new ClientEntity(
                 request.fullName(),
                 request.email());
 
-        Client saved = repository.save(client);
+        ClientEntity saved = repository.save(clientEntity);
 
         return toResponse(saved);
     }
 
     @Transactional
     public ClientResponse findById(UUID id) {
-        Client client = repository.findById(id)
+        ClientEntity clientEntity = repository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException(String.format("Клиент с id=%s не найден", id))
                 );
-        return toResponse(client);
+        return toResponse(clientEntity);
     }
 
-    private  ClientResponse toResponse(Client client) {
+    private  ClientResponse toResponse(ClientEntity clientEntity) {
         return new ClientResponse(
-            client.getId(),
-            client.getFullName(),
-            client.getEmail(),
-            client.getCreatedAt()
+            clientEntity.getId(),
+            clientEntity.getFullName(),
+            clientEntity.getEmail(),
+            clientEntity.getCreatedAt()
         );
     }
 }

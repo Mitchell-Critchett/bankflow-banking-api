@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "clients")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Client {
+public class ClientEntity {
 
     @Id
     private UUID id;
@@ -29,7 +29,7 @@ public class Client {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    public Client(String fullName, String email) {
+    public ClientEntity(String fullName, String email) {
         this.id = UUID.randomUUID();
         this.fullName = fullName;
         this.email = email;

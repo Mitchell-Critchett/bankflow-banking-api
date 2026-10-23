@@ -1,60 +1,33 @@
 package ru.bankflow.account;
 
-
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.ForeignKey;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "accounts")
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public record Account(
+        @Null
+        UUID id,
 
-    @Id
-    private UUID id;
+        @NotNull
+        UUID clientId,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false, unique = true)
-    private UUID client_id;
+        @NotNull
+        String accountNumber,
 
-    @Column(name = "account_number", nullable = false, unique = true)
-    private String accountNumber;
+        @NotNull
+        BigDecimal balance,
 
-    @Column(name = "balance", nullable = false, precision = 19, scale = 2)
-    private BigDecimal balance;
+        @NotNull
+        String currency,
 
-    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "currency")
-    private String currencyCode;
+        @NotNull
+        String status,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private String status;
-
-    @Column(name = "createdAt", nullable = false)
-    private OffsetDateTime createdAt;
-
-    public Account(
-            UUID id,
-            UUID client_id,
-            String accountNumber,
-            BigDecimal balance,
-            String currencyCode,
-            String status,
-            OffsetDateTime createdAt
-    ) {
-        this.id = id;
-        this.client_id = client_id;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.currencyCode = currencyCode;
-        this.status = status;
-        this.createdAt = createdAt;
-    }
-
+        @NotNull
+        OffsetDateTime createdAt
+) {
 }
