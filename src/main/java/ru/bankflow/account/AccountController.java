@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -20,9 +21,9 @@ public class AccountController {
 
     private final AccountService service;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Account> createAccount(
-            @RequestBody Account accountToCreate
+            @RequestBody @Valid Account accountToCreate
     ) {
         log.info("called createAccount");
 
@@ -35,7 +36,7 @@ public class AccountController {
     public ResponseEntity<Account> getAccountByID(
             @PathVariable UUID id
     ) {
-        log.info("called findAccoundById id= " + id);
+        log.info("called findAccoundById id= {}", id);
 
         try {
             return ResponseEntity.status(HttpStatus.OK)
@@ -44,5 +45,14 @@ public class AccountController {
             return ResponseEntity.status(404)
                     .build();
         }
+    }
+
+    @GetMapping("/searchByClient/{clientId}")
+    public  ResponseEntity<List<Account>> searchAccountsByClient(
+            @PathVariable UUID clientId
+    ) {
+        log.info("called searchAccountsByClient");
+
+        return ResponseEntity.ok(service.findAccountsByClient(clientId));
     }
 }

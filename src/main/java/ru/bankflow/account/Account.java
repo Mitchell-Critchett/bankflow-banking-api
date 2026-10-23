@@ -1,6 +1,5 @@
 package ru.bankflow.account;
 
-import jakarta.persistence.ForeignKey;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
@@ -18,14 +17,13 @@ public record Account(
         @NotNull
         String accountNumber,
 
-        @NotNull
+        @Null
         BigDecimal balance,
 
-        @NotNull
+        @Null
         String currency,
 
-        @NotNull
-        String status,
+        AccountStatus status,
 
         @NotNull
         OffsetDateTime createdAt

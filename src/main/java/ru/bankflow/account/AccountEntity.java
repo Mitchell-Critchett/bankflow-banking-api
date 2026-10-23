@@ -34,7 +34,7 @@ public class AccountEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private AccountStatus status;
 
     @Column(name = "createdAt", nullable = false)
     private OffsetDateTime created_at;
@@ -45,7 +45,7 @@ public class AccountEntity {
             String account_number,
             BigDecimal balance,
             String currencyCode,
-            String status,
+            AccountStatus status,
             OffsetDateTime created_at
     ) {
         this.id = id;
@@ -97,11 +97,11 @@ public class AccountEntity {
         this.currencyCode = currencyCode;
     }
 
-    public String getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
     }
 

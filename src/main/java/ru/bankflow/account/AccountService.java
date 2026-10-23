@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.bankflow.client.ClientRepository;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,10 +40,18 @@ public class AccountService {
             );
         }
 
+        if (accountToCreate.accountNumber().length() != 20
+        || !accountToCreate.accountNumber().matches("\\d+")) {
+            throw new IllegalArgumentException(
+                    "Некорректный номер счёта"
+            );
+        }
+
         var entityToSave = mapper.toEntity(accountToCreate);
 
         entityToSave.setCurrencyCode("RUB");
         entityToSave.setBalance(BigDecimal.ZERO);
+        entityToSave.setStatus(AccountStatus.ACTIVE);
 
         var savedEntity = repository.save(entityToSave);
 
@@ -55,5 +65,21 @@ public class AccountService {
                 ));
 
         return mapper.toDomain(accountEntity);
+    }
+
+    public List<Account> findAccountsByClient(UUID clientId) {
+
+        var pageable = Pageable
+                .ofSize(10)
+                .withPage(0);
+
+        List<AccountEntity> clientAccounts = repository.searchAllAccountsByClient(
+                clientId,
+                pageable
+        );
+
+        return clientAccounts.stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }
