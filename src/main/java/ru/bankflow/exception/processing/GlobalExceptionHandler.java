@@ -1,4 +1,4 @@
-package ru.bankflow.validation;
+package ru.bankflow.exception.processing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
