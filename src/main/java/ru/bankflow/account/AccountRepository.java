@@ -13,7 +13,7 @@ public interface AccountRepository
 
     boolean existsByAccountNumber(String accountNumber);
 
-    List<AccountEntity> searchAccountsByClientId(ClientEntity client_id, Pageable pageable);
+    List<AccountEntity> searchAccountsByClientId(UUID client_id, Pageable pageable);
 
 
 }

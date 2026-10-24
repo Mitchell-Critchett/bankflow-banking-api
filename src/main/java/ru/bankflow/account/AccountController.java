@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.bankflow.account.dto.AccountCreateResponse;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,18 +23,18 @@ public class AccountController {
     private final AccountService service;
 
     @PostMapping
-    public ResponseEntity<Account> createAccount(
-            @RequestBody @Valid Account accountToCreate
+    public ResponseEntity<AccountCreateResponse> createAccount(
+            @RequestBody @Valid AccountCreateResponse accountCreateResponseToCreate
     ) {
         log.info("called createAccount");
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.createAccount(accountToCreate));
+                .body(service.createAccount(accountCreateResponseToCreate));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountByID(
+    public ResponseEntity<AccountCreateResponse> getAccountByID(
             @PathVariable UUID id
     ) {
         log.info("called findAccoundById id= {}", id);
@@ -48,7 +49,7 @@ public class AccountController {
     }
 
     @GetMapping("/searchByClient/{clientId}")
-    public  ResponseEntity<List<Account>> searchAccountsByClient(
+    public  ResponseEntity<List<AccountCreateResponse>> searchAccountsByClient(
             @PathVariable UUID clientId
     ) {
         log.info("called searchAccountsByClient");

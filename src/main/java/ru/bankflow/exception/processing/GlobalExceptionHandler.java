@@ -1,5 +1,6 @@
 package ru.bankflow.exception.processing;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,25 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(exception = {
+            EntityNotFoundException.class
+    })
+    public ResponseEntity<ErrorResponseDto> handleNotFound (
+            Exception e
+    ) {
+        log.error("handle not found entity exception");
+
+        var errorResponseDto = new ErrorResponseDto(
+                "Not found",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorResponseDto);
     }
 }

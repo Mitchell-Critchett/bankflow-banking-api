@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.bankflow.account.dto.AccountCreateResponse;
 import ru.bankflow.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
 
@@ -26,7 +27,13 @@ public class AccountService {
     private final AccountMapper mapper;
 
     @Transactional
-    public Account createAccount(Account accountToCreate) {
+    public AccountCreateResponse createAccount(AccountCreateResponse accountToCreate) {
+
+        if (!clientRepository.existsById(accountToCreate.clientId())) {
+            throw new EntityNotFoundException(
+                    "Клиент с id= %s не существует".formatted(accountToCreate.clientId())
+            );
+        }
 
         if (repository.existsByAccountNumber(accountToCreate.accountNumber())) {
             throw new IllegalArgumentException(
@@ -34,11 +41,6 @@ public class AccountService {
             );
         }
 
-        if (!clientRepository.existsById(accountToCreate.clientId().getId())) {
-            throw new IllegalArgumentException(
-                    "Клиент с id= %s не существует".formatted(accountToCreate.clientId())
-            );
-        }
 
         if (accountToCreate.accountNumber().length() != 20
         || !accountToCreate.accountNumber().matches("\\d+")) {
@@ -47,7 +49,10 @@ public class AccountService {
             );
         }
 
-        var entityToSave = mapper.toEntity(accountToCreate);
+        var entityToSave = mapper.toEntity(
+                accountToCreate,
+                clientRepository.getReferenceById(accountToCreate.clientId())
+        );
 
         entityToSave.setCurrencyCode("RUB");
         entityToSave.setBalance(BigDecimal.ZERO);
@@ -58,7 +63,7 @@ public class AccountService {
         return mapper.toDomain(savedEntity);
     }
 
-    public Account getAccountById(UUID id) {
+    public AccountCreateResponse getAccountById(UUID id) {
         AccountEntity accountEntity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Аккаунт с id %s не найден".formatted(id)
@@ -67,20 +72,20 @@ public class AccountService {
         return mapper.toDomain(accountEntity);
     }
 
-    public List<Account> findAccountsByClient(UUID clientId) {
+    public List<AccountCreateResponse> findAccountsByClient(UUID clientId) {
 
         var pageable = Pageable
                 .ofSize(10)
                 .withPage(0);
 
         if (!clientRepository.existsById(clientId)) {
-            throw new IllegalArgumentException(
+            throw new EntityNotFoundException(
                     "Клиент с id= %s не существует".formatted(clientId)
             );
         }
 
         List<AccountEntity> clientAccounts = repository.searchAccountsByClientId(
-                clientRepository.findById(clientId).get(),
+                clientId,
                 pageable
         );
 

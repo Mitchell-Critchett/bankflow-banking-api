@@ -49,65 +49,37 @@ public class AccountEntity {
             AccountStatus status,
             OffsetDateTime createdAt
     ) {
-        this.id = id;
+        this.id = UUID.randomUUID();
         this.client = client;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.currencyCode = currencyCode;
         this.status = status;
-        this.createdAt = createdAt;
-    }
-
-    public UUID getId() {
-        return id;
+        this.createdAt = OffsetDateTime.now();
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public ClientEntity getClient() {
-        return client;
-    }
-
     public void setClient(ClientEntity client) {
         this.client = client;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
     }
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public String getCurrencyCode() {
-        return currencyCode;
     }
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
     }
 
-    public AccountStatus getStatus() {
-        return status;
-    }
-
     public void setStatus(AccountStatus status) {
         this.status = status;
-    }
-
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public void setCreatedAt(OffsetDateTime created_at) {
