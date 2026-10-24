@@ -2,6 +2,7 @@ package ru.bankflow.account;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import ru.bankflow.client.ClientEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -12,7 +13,7 @@ public record Account(
         UUID id,
 
         @NotNull
-        UUID clientId,
+        ClientEntity clientId,
 
         @NotNull
         String accountNumber,

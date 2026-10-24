@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.bankflow.client.ClientEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -20,41 +21,41 @@ public class AccountEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false, unique = true)
-    private UUID client_id;
+    @JoinColumn(name = "client_id", nullable = false)
+    private ClientEntity client;
 
     @Column(name = "account_number", nullable = false, unique = true)
-    private String account_number;
+    private String accountNumber;
 
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
-    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "currency")
+    @Column(name = "currency", nullable = false, length = 3)
     private String currencyCode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus status;
 
-    @Column(name = "createdAt", nullable = false)
-    private OffsetDateTime created_at;
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
 
     public AccountEntity(
             UUID id,
-            UUID client_id,
-            String account_number,
+            ClientEntity client,
+            String accountNumber,
             BigDecimal balance,
             String currencyCode,
             AccountStatus status,
-            OffsetDateTime created_at
+            OffsetDateTime createdAt
     ) {
         this.id = id;
-        this.client_id = client_id;
-        this.account_number = account_number;
+        this.client = client;
+        this.accountNumber = accountNumber;
         this.balance = balance;
         this.currencyCode = currencyCode;
         this.status = status;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -65,20 +66,20 @@ public class AccountEntity {
         this.id = id;
     }
 
-    public UUID getClient_id() {
-        return client_id;
+    public ClientEntity getClient() {
+        return client;
     }
 
-    public void setClient_id(UUID client_id) {
-        this.client_id = client_id;
+    public void setClient(ClientEntity client) {
+        this.client = client;
     }
 
-    public String getAccount_number() {
-        return account_number;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccount_number(String account_number) {
-        this.account_number = account_number;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public BigDecimal getBalance() {
@@ -105,11 +106,11 @@ public class AccountEntity {
         this.status = status;
     }
 
-    public OffsetDateTime getCreated_at() {
-        return created_at;
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(OffsetDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(OffsetDateTime created_at) {
+        this.createdAt = createdAt;
     }
 }

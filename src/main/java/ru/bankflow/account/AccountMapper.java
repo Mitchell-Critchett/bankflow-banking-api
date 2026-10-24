@@ -1,5 +1,8 @@
 package ru.bankflow.account;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AccountMapper {
 
     public Account toDomain(
@@ -7,12 +10,12 @@ public class AccountMapper {
     ) {
         return new Account(
                 accountEntity.getId(),
-                accountEntity.getClient_id(),
-                accountEntity.getAccount_number(),
+                accountEntity.getClient(),
+                accountEntity.getAccountNumber(),
                 accountEntity.getBalance(),
                 accountEntity.getCurrencyCode(),
                 accountEntity.getStatus(),
-                accountEntity.getCreated_at()
+                accountEntity.getCreatedAt()
         );
     }
 

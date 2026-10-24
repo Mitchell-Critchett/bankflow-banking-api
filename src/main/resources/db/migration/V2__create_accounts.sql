@@ -3,7 +3,7 @@ CREATE TABLE accounts (
     client_id UUID NOT NULL REFERENCES clients(id),
     account_number VARCHAR(20) UNIQUE NOT NULL,
     balance NUMERIC(19,2) NOT NULL CHECK ( balance >= 0 ),
-    currency CHAR(3) NOT NULL,
+    currency VARCHAR(3) NOT NULL,
     status VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

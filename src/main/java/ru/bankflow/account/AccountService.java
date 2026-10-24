@@ -28,13 +28,13 @@ public class AccountService {
     @Transactional
     public Account createAccount(Account accountToCreate) {
 
-        if (repository.existByAccountNumber(accountToCreate.accountNumber())) {
+        if (repository.existsByAccountNumber(accountToCreate.accountNumber())) {
             throw new IllegalArgumentException(
-                    "Счёт с таким номером уже существует"
+                    "Счёт с номером: %s уже существует".formatted(accountToCreate.accountNumber())
             );
         }
 
-        if (!clientRepository.existsById(accountToCreate.clientId())) {
+        if (!clientRepository.existsById(accountToCreate.clientId().getId())) {
             throw new IllegalArgumentException(
                     "Клиент с id= %s не существует".formatted(accountToCreate.clientId())
             );
@@ -61,7 +61,7 @@ public class AccountService {
     public Account getAccountById(UUID id) {
         AccountEntity accountEntity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Account with id %s not found".formatted(id)
+                        "Аккаунт с id %s не найден".formatted(id)
                 ));
 
         return mapper.toDomain(accountEntity);
@@ -73,8 +73,14 @@ public class AccountService {
                 .ofSize(10)
                 .withPage(0);
 
-        List<AccountEntity> clientAccounts = repository.searchAllAccountsByClient(
-                clientId,
+        if (!clientRepository.existsById(clientId)) {
+            throw new IllegalArgumentException(
+                    "Клиент с id= %s не существует".formatted(clientId)
+            );
+        }
+
+        List<AccountEntity> clientAccounts = repository.searchAccountsByClientId(
+                clientRepository.findById(clientId).get(),
                 pageable
         );
 
