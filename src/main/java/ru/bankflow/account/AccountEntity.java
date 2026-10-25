@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.bankflow.client.ClientEntity;
 
 import java.math.BigDecimal;
@@ -27,12 +28,15 @@ public class AccountEntity {
     @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
+    @Setter
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
+    @Setter
     @Column(name = "currency", nullable = false, length = 3)
     private String currencyCode;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus status;
@@ -41,48 +45,16 @@ public class AccountEntity {
     private OffsetDateTime createdAt;
 
     public AccountEntity(
-            UUID id,
             ClientEntity client,
-            String accountNumber,
-            BigDecimal balance,
-            String currencyCode,
-            AccountStatus status,
-            OffsetDateTime createdAt
+            String currencyCode
     ) {
         this.id = UUID.randomUUID();
         this.client = client;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
+        this.accountNumber = SecureGenerator.generateSecure20DigitString();
+        this.balance = BigDecimal.ZERO;
         this.currencyCode = currencyCode;
-        this.status = status;
+        this.status = AccountStatus.ACTIVE;
         this.createdAt = OffsetDateTime.now();
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setClient(ClientEntity client) {
-        this.client = client;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-    }
-
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
-
-    public void setCreatedAt(OffsetDateTime created_at) {
-        this.createdAt = createdAt;
-    }
 }

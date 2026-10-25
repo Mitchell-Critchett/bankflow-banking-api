@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.bankflow.account.dto.AccountCreateResponse;
+import ru.bankflow.account.dto.AccountResponse;
+import ru.bankflow.client.ClientEntity;
 import ru.bankflow.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
 
@@ -24,10 +26,8 @@ public class AccountService {
 
     private final ClientRepository clientRepository;
 
-    private final AccountMapper mapper;
-
     @Transactional
-    public AccountCreateResponse createAccount(AccountCreateResponse accountToCreate) {
+    public AccountResponse createAccount(AccountCreateResponse accountToCreate) {
 
         if (!clientRepository.existsById(accountToCreate.clientId())) {
             throw new EntityNotFoundException(
@@ -35,44 +35,30 @@ public class AccountService {
             );
         }
 
-        if (repository.existsByAccountNumber(accountToCreate.accountNumber())) {
-            throw new IllegalArgumentException(
-                    "Счёт с номером: %s уже существует".formatted(accountToCreate.accountNumber())
-            );
-        }
+        ClientEntity client = clientRepository.getReferenceById(accountToCreate.clientId());
 
-
-        if (accountToCreate.accountNumber().length() != 20
-        || !accountToCreate.accountNumber().matches("\\d+")) {
-            throw new IllegalArgumentException(
-                    "Некорректный номер счёта"
-            );
-        }
-
-        var entityToSave = mapper.toEntity(
-                accountToCreate,
-                clientRepository.getReferenceById(accountToCreate.clientId())
+        var entityToSave = new AccountEntity(
+                client,
+                "RUB"
         );
 
         entityToSave.setCurrencyCode("RUB");
-        entityToSave.setBalance(BigDecimal.ZERO);
-        entityToSave.setStatus(AccountStatus.ACTIVE);
 
         var savedEntity = repository.save(entityToSave);
 
-        return mapper.toDomain(savedEntity);
+        return toResponse(savedEntity, client.getId());
     }
 
-    public AccountCreateResponse getAccountById(UUID id) {
+    public AccountResponse getAccountById(UUID id) {
         AccountEntity accountEntity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Аккаунт с id %s не найден".formatted(id)
                 ));
 
-        return mapper.toDomain(accountEntity);
+        return toResponse(accountEntity, accountEntity.getId());
     }
 
-    public List<AccountCreateResponse> findAccountsByClient(UUID clientId) {
+    public List<AccountResponse> findAccountsByClient(UUID clientId) {
 
         var pageable = Pageable
                 .ofSize(10)
@@ -90,7 +76,19 @@ public class AccountService {
         );
 
         return clientAccounts.stream()
-                .map(mapper::toDomain)
+                .map(entity -> toResponse(entity, clientId))
                 .toList();
+    }
+
+    private AccountResponse toResponse(AccountEntity accountEntity, UUID client) {
+        return new AccountResponse(
+                accountEntity.getId(),
+                client,
+                accountEntity.getAccountNumber(),
+                accountEntity.getBalance(),
+                accountEntity.getCurrencyCode(),
+                accountEntity.getStatus(),
+                accountEntity.getCreatedAt()
+        );
     }
 }

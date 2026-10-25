@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.bankflow.account.dto.AccountCreateResponse;
+import ru.bankflow.account.dto.AccountResponse;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -23,7 +23,7 @@ public class AccountController {
     private final AccountService service;
 
     @PostMapping
-    public ResponseEntity<AccountCreateResponse> createAccount(
+    public ResponseEntity<AccountResponse> createAccount(
             @RequestBody @Valid AccountCreateResponse accountCreateResponseToCreate
     ) {
         log.info("called createAccount");
@@ -34,23 +34,19 @@ public class AccountController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountCreateResponse> getAccountByID(
+    public ResponseEntity<AccountResponse> getAccountByID(
             @PathVariable UUID id
     ) {
         log.info("called findAccoundById id= {}", id);
 
-        try {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(service.getAccountById(id));
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(404)
-                    .build();
-        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.getAccountById(id));
     }
 
     @GetMapping("/searchByClient/{clientId}")
-    public  ResponseEntity<List<AccountCreateResponse>> searchAccountsByClient(
+    public  ResponseEntity<List<AccountResponse>> searchAccountsByClient(
             @PathVariable UUID clientId
+
     ) {
         log.info("called searchAccountsByClient");
 
