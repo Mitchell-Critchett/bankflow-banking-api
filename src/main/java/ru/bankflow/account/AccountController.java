@@ -45,11 +45,12 @@ public class AccountController {
 
     @GetMapping("/searchByClient/{clientId}")
     public  ResponseEntity<List<AccountResponse>> searchAccountsByClient(
-            @PathVariable UUID clientId
-
+            @RequestParam UUID clientId,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         log.info("called searchAccountsByClient");
 
-        return ResponseEntity.ok(service.findAccountsByClient(clientId));
+        return ResponseEntity.ok(service.findAccountsByClient(clientId, pageSize, pageNumber));
     }
 }

@@ -12,7 +12,6 @@ import ru.bankflow.client.ClientEntity;
 import ru.bankflow.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,11 +57,18 @@ public class AccountService {
         return toResponse(accountEntity, accountEntity.getId());
     }
 
-    public List<AccountResponse> findAccountsByClient(UUID clientId) {
+    public List<AccountResponse> findAccountsByClient(
+            UUID clientId, Integer pageSize, Integer pageNumber) {
+
+        int validPageSize = pageSize != null
+                ? pageSize : 0;
+
+        int validPageNumber = pageNumber != null
+                ? pageNumber : 0;
 
         var pageable = Pageable
-                .ofSize(10)
-                .withPage(0);
+                .ofSize(validPageSize)
+                .withPage(validPageNumber);
 
         if (!clientRepository.existsById(clientId)) {
             throw new EntityNotFoundException(
