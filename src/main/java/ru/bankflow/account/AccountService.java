@@ -1,12 +1,13 @@
 package ru.bankflow.account;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.bankflow.account.dto.AccountCreateResponse;
+import org.springframework.transaction.annotation.Transactional;
+import ru.bankflow.account.dto.AccountCreateRequest;
 import ru.bankflow.account.dto.AccountResponse;
 import ru.bankflow.client.ClientEntity;
 import ru.bankflow.client.ClientRepository;
@@ -26,7 +27,7 @@ public class AccountService {
     private final ClientRepository clientRepository;
 
     @Transactional
-    public AccountResponse createAccount(AccountCreateResponse accountToCreate) {
+    public AccountResponse createAccount(AccountCreateRequest accountToCreate) {
 
         if (!clientRepository.existsById(accountToCreate.clientId())) {
             throw new EntityNotFoundException(
@@ -40,8 +41,6 @@ public class AccountService {
                 client,
                 "RUB"
         );
-
-        entityToSave.setCurrencyCode("RUB");
 
         var savedEntity = repository.save(entityToSave);
 

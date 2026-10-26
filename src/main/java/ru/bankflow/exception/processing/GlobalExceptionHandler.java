@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.bankflow.exceptions.AccountNotActiveException;
+import ru.bankflow.transfers.exceptions.InsufficientFundsException;
 
 import java.time.LocalDateTime;
 
@@ -52,6 +54,40 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(exception = InsufficientFundsException.class)
+    public ResponseEntity<ErrorResponseDto> handleInsufficientFounds(
+            Exception e
+    ) {
+        log.error("handle insufficient founds");
+
+        var errorResponseDto = new ErrorResponseDto(
+                "Insufficient founds",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(exception = AccountNotActiveException.class)
+    public ResponseEntity<ErrorResponseDto> handleAccountNotActive(
+            Exception e
+    ) {
+        log.error("Operation with non active account");
+
+        var errorResponseDto = new ErrorResponseDto(
+                "Operation with not active account",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(errorResponseDto);
     }
 }

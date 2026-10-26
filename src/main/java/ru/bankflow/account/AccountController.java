@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.bankflow.account.dto.AccountCreateResponse;
+import ru.bankflow.account.dto.AccountCreateRequest;
 import ru.bankflow.account.dto.AccountResponse;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
-            @RequestBody @Valid AccountCreateResponse accountCreateResponseToCreate
+            @RequestBody @Valid AccountCreateRequest accountCreateResponseToCreate
     ) {
         log.info("called createAccount");
 

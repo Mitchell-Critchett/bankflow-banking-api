@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ru.bankflow.client.ClientEntity;
+import ru.bankflow.exceptions.AccountNotActiveException;
+import ru.bankflow.transfers.exceptions.InsufficientFundsException;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -28,15 +29,12 @@ public class AccountEntity {
     @Column(name = "account_number", nullable = false, unique = true)
     private String accountNumber;
 
-    @Setter
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
-    @Setter
     @Column(name = "currency", nullable = false, length = 3)
     private String currencyCode;
 
-    @Setter
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus status;
@@ -56,5 +54,38 @@ public class AccountEntity {
         this.status = AccountStatus.ACTIVE;
         this.createdAt = OffsetDateTime.now();
     }
+
+    public void credit(
+            BigDecimal amount
+    ) {
+        if (!status.equals(AccountStatus.ACTIVE)) {
+            throw new AccountNotActiveException("Аккаунт отправитель неактивный");
+        }
+
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Отрицательная сумма перевода");
+        }
+
+        if (balance.compareTo(amount) < 0) {
+            throw new InsufficientFundsException("Недостаточно средств для перевода");
+        }
+
+        balance = balance.subtract(amount);
+    }
+
+    public void debit(
+            BigDecimal amount
+    ) {
+        if (!status.equals(AccountStatus.ACTIVE)) {
+            throw new AccountNotActiveException("Аккаунт получатель неактивный");
+        }
+
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Отрицательная сумма перевода");
+        }
+
+        balance = balance.add(amount);
+    }
+
 
 }
