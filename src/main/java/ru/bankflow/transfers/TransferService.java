@@ -18,8 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TransferService {
 
-    private final Logger log = LoggerFactory.getLogger(TransferService.class);
-
     private final TransferRepository repository;
 
     private final AccountRepository accountRepository;
