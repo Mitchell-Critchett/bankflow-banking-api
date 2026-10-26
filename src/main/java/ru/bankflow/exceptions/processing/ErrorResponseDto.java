@@ -1,4 +1,4 @@
-package ru.bankflow.exception.processing;
+package ru.bankflow.exceptions.processing;
 
 import java.time.LocalDateTime;
 

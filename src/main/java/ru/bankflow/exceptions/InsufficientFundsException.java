@@ -1,4 +1,4 @@
-package ru.bankflow.transfers.exceptions;
+package ru.bankflow.exceptions;
 
 public class InsufficientFundsException extends RuntimeException {
     public InsufficientFundsException(String message) {

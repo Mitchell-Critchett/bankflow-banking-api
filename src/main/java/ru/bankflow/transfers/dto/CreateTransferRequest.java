@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record TransferCreateRequest(
+public record CreateTransferRequest(
 
     @NotNull(message = "Не введён счёт отправителя платежа")
     UUID sourceAccount,

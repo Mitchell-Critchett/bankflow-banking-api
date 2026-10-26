@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bankflow.account.AccountEntity;
 import ru.bankflow.account.AccountRepository;
-import ru.bankflow.transfers.dto.TransferCreateRequest;
+import ru.bankflow.transfers.dto.CreateTransferRequest;
 import ru.bankflow.transfers.dto.TransferResponse;
 
 import java.util.UUID;
@@ -24,11 +24,27 @@ public class TransferService {
 
     private final AccountRepository accountRepository;
 
+    public TransferResponse findById(UUID id)
+    {
+        TransferEntity transferEntity = repository.findById(id)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Перевод с id %s не найден".formatted(id))
+                );
+
+        return toResponse(transferEntity);
+    }
+
     @Transactional
     public TransferResponse createTransfer(
-            TransferCreateRequest transferToCreate,
+            CreateTransferRequest transferToCreate,
             UUID idempotencyKey
     ) {
+        if (repository.existsByIdempotencyKey(idempotencyKey)) {
+            throw new IllegalArgumentException(
+                    "Перевод с idempotencyKey = %s уже существует".formatted(idempotencyKey)
+            );
+        }
+
         AccountEntity sourceAccount = accountRepository.findById(transferToCreate.sourceAccount())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "аккаунт отправителя с id %s не найден".formatted(transferToCreate.sourceAccount()
@@ -56,22 +72,21 @@ public class TransferService {
                 idempotencyKey
         );
 
+        var savedTransfer = repository.save(entityToSave);
+
         return toResponse(
-                entityToSave,
-                savedSourceAccount.getId(),
-                savedDestinationAccount.getId()
+                savedTransfer
         );
     }
 
     private TransferResponse toResponse(
-            TransferEntity transferEntity,
-            UUID sourceAccountId,
-            UUID destinationAccountId)
+            TransferEntity transferEntity
+    )
     {
         return new TransferResponse(
                 transferEntity.getId(),
-                sourceAccountId,
-                destinationAccountId,
+                transferEntity.getSourceAccount().getId(),
+                transferEntity.getDestinationAccount().getId(),
                 transferEntity.getAmount(),
                 transferEntity.getStatus(),
                 transferEntity.getCreatedAt(),

@@ -3,16 +3,15 @@ package ru.bankflow.account;
 import jakarta.persistence.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bankflow.account.dto.AccountCreateRequest;
+import ru.bankflow.account.dto.CreateAccountRequest;
 import ru.bankflow.account.dto.AccountResponse;
 import ru.bankflow.client.ClientEntity;
 import ru.bankflow.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,14 +19,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AccountService {
 
-    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
-
     private final AccountRepository repository;
 
     private final ClientRepository clientRepository;
 
     @Transactional
-    public AccountResponse createAccount(AccountCreateRequest accountToCreate) {
+    public AccountResponse createAccount(CreateAccountRequest accountToCreate) {
 
         if (!clientRepository.existsById(accountToCreate.clientId())) {
             throw new EntityNotFoundException(
@@ -44,7 +41,7 @@ public class AccountService {
 
         var savedEntity = repository.save(entityToSave);
 
-        return toResponse(savedEntity, client.getId());
+        return toResponse(savedEntity);
     }
 
     public AccountResponse getAccountById(UUID id) {
@@ -53,7 +50,7 @@ public class AccountService {
                         "Аккаунт с id %s не найден".formatted(id)
                 ));
 
-        return toResponse(accountEntity, accountEntity.getId());
+        return toResponse(accountEntity);
     }
 
     public List<AccountResponse> findAccountsByClient(
@@ -81,14 +78,27 @@ public class AccountService {
         );
 
         return clientAccounts.stream()
-                .map(entity -> toResponse(entity, clientId))
+                .map(this::toResponse)
                 .toList();
     }
 
-    private AccountResponse toResponse(AccountEntity accountEntity, UUID client) {
+    public AccountResponse createTestDebitOn1000RUBS(UUID id) {
+        AccountEntity accountEntity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Аккаунт с id %s не найден".formatted(id)
+                ));
+
+        accountEntity.debit(BigDecimal.valueOf(1000.0));
+        var savedEntity = repository.save(accountEntity);
+
+        return toResponse(savedEntity);
+    }
+
+    private AccountResponse toResponse(AccountEntity accountEntity) {
+
         return new AccountResponse(
                 accountEntity.getId(),
-                client,
+                accountEntity.getClient().getId(),
                 accountEntity.getAccountNumber(),
                 accountEntity.getBalance(),
                 accountEntity.getCurrencyCode(),

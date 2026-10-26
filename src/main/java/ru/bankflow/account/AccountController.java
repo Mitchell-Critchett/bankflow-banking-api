@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.bankflow.account.dto.AccountCreateRequest;
+import ru.bankflow.account.dto.CreateAccountRequest;
 import ru.bankflow.account.dto.AccountResponse;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
-            @RequestBody @Valid AccountCreateRequest accountCreateResponseToCreate
+            @RequestBody @Valid CreateAccountRequest accountCreateResponseToCreate
     ) {
         log.info("called createAccount");
 
@@ -52,5 +52,11 @@ public class AccountController {
         log.info("called searchAccountsByClient");
 
         return ResponseEntity.ok(service.findAccountsByClient(clientId, pageSize, pageNumber));
+    }
+
+    @PostMapping("/testDebit/{id}")
+    public ResponseEntity<AccountResponse> createTestDebitOn1000RUBS(@PathVariable UUID id)
+    {
+        return ResponseEntity.ok(service.createTestDebitOn1000RUBS(id));
     }
 }

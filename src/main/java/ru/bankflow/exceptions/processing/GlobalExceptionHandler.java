@@ -1,4 +1,4 @@
-package ru.bankflow.exception.processing;
+package ru.bankflow.exceptions.processing;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.bankflow.exceptions.AccountNotActiveException;
-import ru.bankflow.transfers.exceptions.InsufficientFundsException;
+import ru.bankflow.exceptions.InsufficientFundsException;
 
 import java.time.LocalDateTime;
 

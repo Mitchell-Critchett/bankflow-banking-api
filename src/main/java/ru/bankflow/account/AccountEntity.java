@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.bankflow.client.ClientEntity;
 import ru.bankflow.exceptions.AccountNotActiveException;
-import ru.bankflow.transfers.exceptions.InsufficientFundsException;
+import ru.bankflow.exceptions.InsufficientFundsException;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

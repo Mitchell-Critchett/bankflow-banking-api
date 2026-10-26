@@ -8,4 +8,5 @@ public interface TransferRepository extends
         JpaRepository<TransferEntity, UUID> {
 
 
+    boolean existsByIdempotencyKey(UUID idempotencyKey);
 }
