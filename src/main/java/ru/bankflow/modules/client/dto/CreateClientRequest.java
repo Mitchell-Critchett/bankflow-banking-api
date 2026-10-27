@@ -1,4 +1,4 @@
-package ru.bankflow.client.dto;
+package ru.bankflow.modules.client.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

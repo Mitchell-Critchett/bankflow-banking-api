@@ -1,8 +1,6 @@
-package ru.bankflow.account.dto;
+package ru.bankflow.modules.account.dto;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import ru.bankflow.account.AccountStatus;
+import ru.bankflow.modules.account.AccountStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

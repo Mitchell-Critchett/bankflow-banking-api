@@ -1,4 +1,4 @@
-package ru.bankflow.transfers.dto;
+package ru.bankflow.modules.transfer.dto;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;

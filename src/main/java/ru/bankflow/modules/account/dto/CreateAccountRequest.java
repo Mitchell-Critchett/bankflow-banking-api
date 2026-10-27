@@ -1,4 +1,4 @@
-package ru.bankflow.account.dto;
+package ru.bankflow.modules.account.dto;
 
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;

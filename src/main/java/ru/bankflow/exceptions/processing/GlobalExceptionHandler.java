@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.bankflow.exceptions.AccountNotActiveException;
+import ru.bankflow.exceptions.IdempotencyKeyConflictException;
 import ru.bankflow.exceptions.InsufficientFundsException;
 
 import java.time.LocalDateTime;
@@ -88,6 +89,23 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(errorResponseDto);
+    }
+
+    @ExceptionHandler(exception = IdempotencyKeyConflictException.class)
+    public ResponseEntity<ErrorResponseDto> handleIdempotencyKeyConflict(
+            Exception e
+    ) {
+        log.error("Idempotency key conflict");
+
+        var errorResponseDto = new ErrorResponseDto(
+                "Idempotency key conflict",
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(errorResponseDto);
     }
 }

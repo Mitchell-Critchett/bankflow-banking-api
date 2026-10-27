@@ -1,11 +1,11 @@
-package ru.bankflow.account;
+package ru.bankflow.modules.account;
 
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.bankflow.client.ClientEntity;
+import ru.bankflow.modules.client.ClientEntity;
 import ru.bankflow.exceptions.AccountNotActiveException;
 import ru.bankflow.exceptions.InsufficientFundsException;
 
@@ -55,7 +55,7 @@ public class AccountEntity {
         this.createdAt = OffsetDateTime.now();
     }
 
-    public void credit(
+    public void debit(
             BigDecimal amount
     ) {
         if (!status.equals(AccountStatus.ACTIVE)) {
@@ -73,7 +73,7 @@ public class AccountEntity {
         balance = balance.subtract(amount);
     }
 
-    public void debit(
+    public void credit(
             BigDecimal amount
     ) {
         if (!status.equals(AccountStatus.ACTIVE)) {

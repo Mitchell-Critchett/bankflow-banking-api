@@ -1,4 +1,4 @@
-package ru.bankflow.account;
+package ru.bankflow.modules.account;
 
 public enum AccountStatus {
     ACTIVE,

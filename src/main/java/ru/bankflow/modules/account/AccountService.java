@@ -1,14 +1,14 @@
-package ru.bankflow.account;
+package ru.bankflow.modules.account;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bankflow.account.dto.CreateAccountRequest;
-import ru.bankflow.account.dto.AccountResponse;
-import ru.bankflow.client.ClientEntity;
-import ru.bankflow.client.ClientRepository;
+import ru.bankflow.modules.account.dto.CreateAccountRequest;
+import ru.bankflow.modules.account.dto.AccountResponse;
+import ru.bankflow.modules.client.ClientEntity;
+import ru.bankflow.modules.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;

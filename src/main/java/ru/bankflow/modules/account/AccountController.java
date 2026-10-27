@@ -1,4 +1,4 @@
-package ru.bankflow.account;
+package ru.bankflow.modules.account;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.bankflow.account.dto.CreateAccountRequest;
-import ru.bankflow.account.dto.AccountResponse;
+import ru.bankflow.modules.account.dto.CreateAccountRequest;
+import ru.bankflow.modules.account.dto.AccountResponse;
 
 import java.util.List;
 import java.util.UUID;

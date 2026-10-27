@@ -1,11 +1,11 @@
-package ru.bankflow.transfers;
+package ru.bankflow.modules.transfer;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.bankflow.account.AccountEntity;
+import ru.bankflow.modules.account.AccountEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

@@ -1,4 +1,4 @@
-package ru.bankflow.client;
+package ru.bankflow.modules.client;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;

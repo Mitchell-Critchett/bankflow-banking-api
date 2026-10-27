@@ -1,6 +1,6 @@
-package ru.bankflow.transfers.dto;
+package ru.bankflow.modules.transfer.dto;
 
-import ru.bankflow.transfers.TransferStatus;
+import ru.bankflow.modules.transfer.TransferStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

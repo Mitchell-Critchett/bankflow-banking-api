@@ -1,4 +1,4 @@
-package ru.bankflow.transfers;
+package ru.bankflow.modules.transfer;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.bankflow.transfers.dto.CreateTransferRequest;
-import ru.bankflow.transfers.dto.TransferResponse;
+import ru.bankflow.modules.transfer.dto.CreateTransferRequest;
+import ru.bankflow.modules.transfer.dto.TransferResponse;
 
 import java.util.UUID;
 

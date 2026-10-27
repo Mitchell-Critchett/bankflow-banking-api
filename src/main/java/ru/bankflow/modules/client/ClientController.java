@@ -1,11 +1,11 @@
-package ru.bankflow.client;
+package ru.bankflow.modules.client;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.bankflow.client.dto.ClientResponse;
-import ru.bankflow.client.dto.CreateClientRequest;
+import ru.bankflow.modules.client.dto.ClientResponse;
+import ru.bankflow.modules.client.dto.CreateClientRequest;
 
 import java.util.UUID;
 
