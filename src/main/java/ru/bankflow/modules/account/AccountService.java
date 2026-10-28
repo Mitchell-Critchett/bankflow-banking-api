@@ -10,7 +10,6 @@ import ru.bankflow.modules.account.dto.AccountResponse;
 import ru.bankflow.modules.client.ClientEntity;
 import ru.bankflow.modules.client.ClientRepository;
 import org.springframework.data.domain.Pageable;
-import ru.bankflow.modules.ledger.EntryService;
 
 import java.math.BigDecimal;
 import java.util.List;
