@@ -58,32 +58,12 @@ public class AccountEntity {
     public void debit(
             BigDecimal amount
     ) {
-        if (!status.equals(AccountStatus.ACTIVE)) {
-            throw new AccountNotActiveException("Аккаунт отправитель неактивный");
-        }
-
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Отрицательная сумма перевода");
-        }
-
-        if (balance.compareTo(amount) < 0) {
-            throw new InsufficientFundsException("Недостаточно средств для перевода");
-        }
-
         balance = balance.subtract(amount);
     }
 
     public void credit(
             BigDecimal amount
     ) {
-        if (!status.equals(AccountStatus.ACTIVE)) {
-            throw new AccountNotActiveException("Аккаунт получатель неактивный");
-        }
-
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Отрицательная сумма перевода");
-        }
-
         balance = balance.add(amount);
     }
 
