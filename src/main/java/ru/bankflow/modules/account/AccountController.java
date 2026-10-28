@@ -45,7 +45,7 @@ public class AccountController {
 
     @GetMapping("/searchByClient/{clientId}")
     public  ResponseEntity<List<AccountResponse>> searchAccountsByClient(
-            @RequestParam UUID clientId,
+            @PathVariable(value = "clientId") UUID clientId,
             @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {

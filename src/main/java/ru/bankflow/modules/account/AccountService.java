@@ -59,7 +59,7 @@ public class AccountService {
             UUID clientId, Integer pageSize, Integer pageNumber) {
 
         int validPageSize = pageSize != null
-                ? pageSize : 0;
+                ? pageSize : 20;
 
         int validPageNumber = pageNumber != null
                 ? pageNumber : 0;
