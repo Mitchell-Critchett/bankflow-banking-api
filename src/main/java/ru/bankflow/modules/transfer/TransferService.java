@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.bankflow.modules.account.AccountEntity;
 import ru.bankflow.modules.account.AccountRepository;
 import ru.bankflow.exceptions.IdempotencyKeyConflictException;
+import ru.bankflow.modules.account.BalanceService;
 import ru.bankflow.modules.transfer.dto.CreateTransferRequest;
 import ru.bankflow.modules.transfer.dto.TransferResponse;
 
@@ -20,6 +21,8 @@ public class TransferService {
     private final TransferRepository repository;
 
     private final AccountRepository accountRepository;
+
+    private final BalanceService balanceService;
 
     public TransferResponse findById(UUID id)
     {
@@ -89,8 +92,8 @@ public class TransferService {
             throw new IllegalArgumentException("Счёт отправителя и получателя должны различаться!");
         }
 
-        sourceAccount.debit(transferToCreate.amount());
-        destinationAccount.credit(transferToCreate.amount());
+        balanceService.processDebit(sourceAccount, transferToCreate.amount());
+        balanceService.processCredit(destinationAccount, transferToCreate.amount());
 
         var savedSourceAccount = accountRepository.save(sourceAccount);
         var savedDestinationAccount = accountRepository.save(destinationAccount);

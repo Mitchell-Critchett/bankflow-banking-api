@@ -23,6 +23,8 @@ public class AccountService {
 
     private final ClientRepository clientRepository;
 
+    private final BalanceService balanceService;
+
     @Transactional
     public AccountResponse createAccount(CreateAccountRequest accountToCreate) {
 
@@ -88,7 +90,8 @@ public class AccountService {
                         "Аккаунт с id %s не найден".formatted(id)
                 ));
 
-        accountEntity.debit(BigDecimal.valueOf(1000.0));
+        balanceService.processCredit(accountEntity, BigDecimal.valueOf(1000.0));
+
         var savedEntity = repository.save(accountEntity);
 
         return toResponse(savedEntity);
