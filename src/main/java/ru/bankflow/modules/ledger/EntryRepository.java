@@ -11,4 +11,6 @@ public interface EntryRepository extends
         JpaRepository<EntryEntity, UUID> {
 
     Optional<List<EntryEntity>> findByAccountId(UUID accountId, Pageable pageable);
+
+    Optional<EntryEntity> findByIdempotencyKey(UUID idempotencyKey);
 }

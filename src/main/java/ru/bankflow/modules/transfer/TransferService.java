@@ -115,14 +115,16 @@ public class TransferService {
                 savedSourceAccount,
                 transferToCreate.amount().negate(),
                 OperationType.DEBIT,
-                savedTransfer
+                savedTransfer,
+                UUID.randomUUID()
         );
 
         entryService.create(
                 savedDestinationAccount,
                 transferToCreate.amount(),
                 OperationType.CREDIT,
-                savedTransfer
+                savedTransfer,
+                UUID.randomUUID()
         );
 
         return toResponse(

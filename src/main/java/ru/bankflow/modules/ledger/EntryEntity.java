@@ -38,20 +38,25 @@ public class EntryEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType, TransferEntity transfer) {
+    @Column(name = "idempotency_key", nullable = false)
+    private UUID idempotencyKey;
+
+    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType, TransferEntity transfer, UUID idempotencyKey) {
         this.id = UUID.randomUUID();
         this.account = account;
         this.flowFunds = flowFunds;
         this.operationType = operationType;
         this.transfer = transfer;
         this.createdAt = OffsetDateTime.now();
+        this.idempotencyKey = idempotencyKey;
     }
 
-    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType) {
+    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType, UUID idempotencyKey) {
         this.id = UUID.randomUUID();
         this.account = account;
         this.flowFunds = flowFunds;
         this.operationType = operationType;
         this.createdAt = OffsetDateTime.now();
+        this.idempotencyKey = idempotencyKey;
     }
 }
