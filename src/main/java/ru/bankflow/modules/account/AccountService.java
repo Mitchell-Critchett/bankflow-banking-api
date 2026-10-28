@@ -26,8 +26,6 @@ public class AccountService {
 
     private final BalanceService balanceService;
 
-    private final EntryService entryService;
-
     @Transactional
     public AccountResponse createAccount(CreateAccountRequest accountToCreate) {
 
