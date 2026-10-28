@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "account_entries")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AccountEntryEntity {
+public class EntryEntity {
 
     @Id
     private UUID id;
@@ -38,7 +38,7 @@ public class AccountEntryEntity {
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
-    public AccountEntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType, TransferEntity transfer) {
+    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType, TransferEntity transfer) {
         this.id = UUID.randomUUID();
         this.account = account;
         this.flowFunds = flowFunds;
@@ -47,7 +47,7 @@ public class AccountEntryEntity {
         this.createdAt = OffsetDateTime.now();
     }
 
-    public AccountEntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType) {
+    public EntryEntity(AccountEntity account, BigDecimal flowFunds, OperationType operationType) {
         this.id = UUID.randomUUID();
         this.account = account;
         this.flowFunds = flowFunds;

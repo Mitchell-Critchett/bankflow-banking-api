@@ -9,9 +9,12 @@ import ru.bankflow.modules.account.AccountEntity;
 import ru.bankflow.modules.account.AccountRepository;
 import ru.bankflow.exceptions.IdempotencyKeyConflictException;
 import ru.bankflow.modules.account.BalanceService;
+import ru.bankflow.modules.ledger.EntryService;
+import ru.bankflow.modules.ledger.OperationType;
 import ru.bankflow.modules.transfer.dto.CreateTransferRequest;
 import ru.bankflow.modules.transfer.dto.TransferResponse;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -23,6 +26,8 @@ public class TransferService {
     private final AccountRepository accountRepository;
 
     private final BalanceService balanceService;
+
+    private final EntryService entryService;
 
     public TransferResponse findById(UUID id)
     {
@@ -106,6 +111,20 @@ public class TransferService {
         );
 
         var savedTransfer = repository.save(entityToSave);
+
+        entryService.create(
+                savedSourceAccount,
+                transferToCreate.amount().negate(),
+                OperationType.DEBIT,
+                savedTransfer
+        );
+
+        entryService.create(
+                savedDestinationAccount,
+                transferToCreate.amount(),
+                OperationType.CREDIT,
+                savedTransfer
+        );
 
         return toResponse(
                 savedTransfer
