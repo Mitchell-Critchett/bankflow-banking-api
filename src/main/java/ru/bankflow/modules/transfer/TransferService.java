@@ -14,7 +14,6 @@ import ru.bankflow.modules.ledger.OperationType;
 import ru.bankflow.modules.transfer.dto.CreateTransferRequest;
 import ru.bankflow.modules.transfer.dto.TransferResponse;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
